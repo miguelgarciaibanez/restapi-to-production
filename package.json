@@ -1,0 +1,19 @@
+{
+  "name": "restapi-to-production",
+  "version": "1.0.0",
+  "description": "Backend API Example",
+  "main": "src/app.ts",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miguelgarciaibanez/restapi-to-production.git"
+  },
+  "author": "Miguel Garcia",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/miguelgarciaibanez/restapi-to-production/issues"
+  },
+  "homepage": "https://github.com/miguelgarciaibanez/restapi-to-production#readme"
+}
