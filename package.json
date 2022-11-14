@@ -1,19 +1,30 @@
 {
-  "name": "restapi-to-production",
-  "version": "1.0.0",
-  "description": "Backend API Example",
-  "main": "src/app.ts",
-  "scripts": {
-    "test": "test"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/miguelgarciaibanez/restapi-to-production.git"
-  },
-  "author": "Miguel Garcia",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/miguelgarciaibanez/restapi-to-production/issues"
-  },
-  "homepage": "https://github.com/miguelgarciaibanez/restapi-to-production#readme"
+    "name": "restapi-to-production",
+    "version": "1.0.0",
+    "description": "Backend API Example",
+    "main": "src/app.ts",
+    "scripts": {
+        "start": "node dist/app.js",
+        "test": "jest",
+        "test:unit": "ENV_FILE=./config/.env.test jest",
+        "dev": "tsc-watch --onSuccess \"node dist/app.js\" ",
+        "build": "tsc"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/miguelgarciaibanez/restapi-to-production.git"
+    },
+    "author": "Miguel Garcia",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/miguelgarciaibanez/restapi-to-production/issues"
+    },
+    "homepage": "https://github.com/miguelgarciaibanez/restapi-to-production#readme",
+    "dependencies": {
+        "@types/node": "^18.11.9",
+        "typescript": "^4.8.4"
+    },
+    "devDependencies": {
+        "ts-node": "^10.9.1"
+    }
 }
