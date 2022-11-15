@@ -40,7 +40,7 @@ const express_1 = __importDefault(require("express"));
 const OpenApiValidator = __importStar(require("express-openapi-validator"));
 const swagger_routes_express_1 = require("swagger-routes-express");
 const yamljs_1 = __importDefault(require("yamljs"));
-const api = __importStar(require("../api/controllers"));
+const api = __importStar(require("@exmpl/api/controllers"));
 function createServer() {
     return __awaiter(this, void 0, void 0, function* () {
         const yamlSpecFile = './config/openapi.yml';
@@ -67,7 +67,11 @@ function createServer() {
         });
         const connect = (0, swagger_routes_express_1.connector)(api, apiDefinition, {
             onCreateRoute: (method, descriptor) => {
+                descriptor.shift();
                 console.log(`${method}:${descriptor[0]}: ${descriptor[1].name}`);
+            },
+            security: {
+                bearerAuth: api.auth
             }
         });
         connect(server);
