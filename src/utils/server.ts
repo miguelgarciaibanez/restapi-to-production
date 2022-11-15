@@ -38,7 +38,7 @@ export async function createServer(): Promise<Express> {
     const connect = connector(api , apiDefinition,{
         onCreateRoute:(method: string, descriptor:any[]) => {
             descriptor.shift();
-            console.log(`${method}:${descriptor[0]}: ${(descriptor[1] as any).name}`);
+            console.log(`${method}:${descriptor[0]}: ${(descriptor[1] as any)?.name}`);
         },
         security: {
             bearerAuth:api.auth
