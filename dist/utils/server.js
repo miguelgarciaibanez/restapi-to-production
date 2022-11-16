@@ -40,6 +40,7 @@ const express_1 = __importDefault(require("express"));
 const OpenApiValidator = __importStar(require("express-openapi-validator"));
 const swagger_routes_express_1 = require("swagger-routes-express");
 const yamljs_1 = __importDefault(require("yamljs"));
+//import * as api from "../api/controllers";
 const api = __importStar(require("@exmpl/api/controllers"));
 function createServer() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -67,8 +68,9 @@ function createServer() {
         });
         const connect = (0, swagger_routes_express_1.connector)(api, apiDefinition, {
             onCreateRoute: (method, descriptor) => {
+                var _a;
                 descriptor.shift();
-                console.log(`${method}:${descriptor[0]}: ${descriptor[1].name}`);
+                console.log(`${method}:${descriptor[0]}: ${(_a = descriptor[1]) === null || _a === void 0 ? void 0 : _a.name}`);
             },
             security: {
                 bearerAuth: api.auth
