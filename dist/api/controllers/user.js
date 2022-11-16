@@ -4,9 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.auth = void 0;
-//import UserService from '../services/user'
 const user_1 = __importDefault(require("@exmpl/api/services/user"));
-//import {writeJsonResponse} from '../../utils/express'
 const express_1 = require("@exmpl/utils/express");
 function auth(req, res, next) {
     const token = req.headers.authorization;

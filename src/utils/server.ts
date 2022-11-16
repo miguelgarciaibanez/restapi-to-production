@@ -8,6 +8,8 @@ import { connector, summarise } from "swagger-routes-express";
 import YAML from "yamljs";
 
 import * as api from '@exmpl/api/controllers';
+import config from '@exmpl/config';
+import logger from '@exmpl/utils/logger'
 import { expressDevLogger } from '@exmpl/utils/express_dev_logger';
 
 
@@ -15,7 +17,7 @@ export async function createServer(): Promise<Express> {
     const yamlSpecFile = './config/openapi.yml';
     const apiDefinition =  YAML.load(yamlSpecFile);
     const apiSummary = summarise(apiDefinition);
-    console.log(apiSummary);
+    logger.info(apiSummary);
 
     const server = express();
 
@@ -40,16 +42,22 @@ export async function createServer(): Promise<Express> {
         })
     })
     
-    server.use(morgan(':method :url :status :response-time ms - :res[content-length]'))
-  
-    morganBody(server)
-  
-    server.use(expressDevLogger)
+    if (config.morganLogger) {
+        server.use(morgan(':method :url :status :response-time ms - :res[content-length]'))
+    }
+    
+    if (config.morganBodyLogger) {
+        morganBody(server)
+    }
+
+    if (config.exmplDevLogger) {
+        server.use(expressDevLogger)
+    }
 
     const connect = connector(api , apiDefinition,{
         onCreateRoute:(method: string, descriptor:any[]) => {
             descriptor.shift();
-            console.log(`${method}:${descriptor[0]}: ${(descriptor[1] as any)?.name}`);
+            logger.verbose(`${method}: ${descriptor.map((d: any) => d.name).join(', ')}`)
         },
         security: {
             bearerAuth:api.auth

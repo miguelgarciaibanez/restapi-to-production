@@ -38,16 +38,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.createServer = void 0;
 const express_1 = __importDefault(require("express"));
 const OpenApiValidator = __importStar(require("express-openapi-validator"));
+const morgan_1 = __importDefault(require("morgan"));
+const morgan_body_1 = __importDefault(require("morgan-body"));
 const swagger_routes_express_1 = require("swagger-routes-express");
 const yamljs_1 = __importDefault(require("yamljs"));
-//import * as api from "../api/controllers";
 const api = __importStar(require("@exmpl/api/controllers"));
+const config_1 = __importDefault(require("@exmpl/config"));
+const logger_1 = __importDefault(require("@exmpl/utils/logger"));
+const express_dev_logger_1 = require("@exmpl/utils/express_dev_logger");
 function createServer() {
     return __awaiter(this, void 0, void 0, function* () {
         const yamlSpecFile = './config/openapi.yml';
         const apiDefinition = yamljs_1.default.load(yamlSpecFile);
         const apiSummary = (0, swagger_routes_express_1.summarise)(apiDefinition);
-        console.log(apiSummary);
+        logger_1.default.info(apiSummary);
         const server = (0, express_1.default)();
         const validatorOptions = {
             coerceTypes: true,
@@ -66,11 +70,19 @@ function createServer() {
                 }
             });
         });
+        if (config_1.default.morganLogger) {
+            server.use((0, morgan_1.default)(':method :url :status :response-time ms - :res[content-length]'));
+        }
+        if (config_1.default.morganBodyLogger) {
+            (0, morgan_body_1.default)(server);
+        }
+        if (config_1.default.exmplDevLogger) {
+            server.use(express_dev_logger_1.expressDevLogger);
+        }
         const connect = (0, swagger_routes_express_1.connector)(api, apiDefinition, {
             onCreateRoute: (method, descriptor) => {
-                var _a;
                 descriptor.shift();
-                console.log(`${method}:${descriptor[0]}: ${(_a = descriptor[1]) === null || _a === void 0 ? void 0 : _a.name}`);
+                logger_1.default.verbose(`${method}: ${descriptor.map((d) => d.name).join(', ')}`);
             },
             security: {
                 bearerAuth: api.auth
