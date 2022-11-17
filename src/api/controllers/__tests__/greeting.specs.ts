@@ -33,6 +33,24 @@ describe('GET /hello',()=>{
             type: 'request_validation', 
             message: expect.stringMatching(/Empty.*\'name\'/), 
             errors: expect.anything()
-          }});
+        }});
+      });
+
+      it('should return 401 & valid eror response to invalid authorization token', async () => {
+        const result = await await request(server).get(`/api/v1/goodbye`).set('Authorization', 'Bearer invalidFakeToken');
+        expect(result.statusCode).toEqual(401);
+        expect(result.headers[`content-type`]).toMatch('application/json');
+        expect(JSON.parse(result.text)).toMatchObject({error: {type: 'unauthorized', message: 'Authentication Failed'}});
+      })
+    
+      it('should return 401 & valid eror response if authorization header field is missed', async () => {
+        const result = await await request(server).get(`/api/v1/goodbye`);
+        expect(result.statusCode).toEqual(401);
+        expect(result.headers[`content-type`]).toMatch('application/json');
+        expect(JSON.parse(result.text)).toMatchObject({'error': {
+            type: 'request_validation', 
+            message: 'Authorization header required', 
+            errors: expect.anything()
+        }});
       })
 });

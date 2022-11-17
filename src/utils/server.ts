@@ -42,14 +42,17 @@ export async function createServer(): Promise<Express> {
         })
     })
     
+    /* istanbul ignore next */
     if (config.morganLogger) {
         server.use(morgan(':method :url :status :response-time ms - :res[content-length]'))
     }
     
+    /* istanbul ignore next */
     if (config.morganBodyLogger) {
         morganBody(server)
     }
 
+    /* istanbul ignore next */
     if (config.exmplDevLogger) {
         server.use(expressDevLogger)
     }
