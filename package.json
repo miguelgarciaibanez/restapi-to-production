@@ -42,6 +42,11 @@
         "yamljs": "^0.3.0"
     },
     "devDependencies": {
+        "@types/jest": "^29.2.3",
+        "@types/supertest": "^2.0.12",
+        "jest": "^29.3.1",
+        "supertest": "^6.3.1",
+        "ts-jest": "^29.0.3",
         "ts-node": "^10.9.1",
         "tsc-watch": "^5.0.3"
     }
