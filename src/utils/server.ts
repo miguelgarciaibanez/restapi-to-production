@@ -1,4 +1,3 @@
-import bodyParser from "body-parser";
 import express from "express";
 import * as OpenApiValidator from "express-openapi-validator";
 import { Express } from "express-serve-static-core";
