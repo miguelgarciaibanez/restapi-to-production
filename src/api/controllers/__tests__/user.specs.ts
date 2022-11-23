@@ -26,13 +26,14 @@ describe('POST /api/v1/user', () => {
         }
         const result = await request(server)
             .post('/api/v1/user')
-            .send(data);
-        console.log(result);
+            .send(data)
+            .set('Accept', 'application/json')
         expect(result.statusCode).toEqual(201);
         expect(JSON.parse(result.text)).toMatchObject({
             userId: expect.stringMatching(/^[a-f0-9]{24}$/)
         });
     })
+
 
     it('should return 409 & valid response for duplicated user', async () => {
         const data = {
@@ -42,11 +43,13 @@ describe('POST /api/v1/user', () => {
         }
         const result = await request(server)
             .post('/api/v1/user')
-            .send(data);
+            .send(data)
+            .set('Accept', 'application/json');
         expect(result.statusCode).toEqual(201);
         const result2 = await request(server)
             .post('/api/v1/user')
-            .send(data);
+            .send(data)
+            .set('Accept', 'application/json');
         expect(result2.statusCode).toEqual(409);
         expect(JSON.parse(result.text)).toMatchObject({
             error: {
@@ -64,7 +67,8 @@ describe('POST /api/v1/user', () => {
         }
         const result = await request(server)
             .post('/api/v1/user')
-            .send(data);
+            .send(data)
+            .set('Accept', 'application/json');
         expect(result.statusCode).toEqual(400);
         expect(JSON.parse(result.text)).toMatchObject({
             error: { type: 'request_validation', message: expect.stringMatching(/email/) }

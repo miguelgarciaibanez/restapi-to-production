@@ -3,6 +3,7 @@ import * as OpenApiValidator from "express-openapi-validator";
 import { Express } from "express-serve-static-core";
 import morgan from "morgan";
 import morganBody from "morgan-body";
+import bodyParser from "body-parser";
 import { connector, summarise } from "swagger-routes-express";
 import YAML from "yamljs";
 
@@ -27,6 +28,7 @@ export async function createServer(): Promise<Express> {
         validateResponses: false
     }
 
+    server.use(bodyParser.json());
     server.use(OpenApiValidator.middleware(validatorOptions));
 
     // error customization, if request is invalid

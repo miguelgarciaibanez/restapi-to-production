@@ -3,6 +3,7 @@ import * as express from 'express'
 import UserService, {ErrorResponse} from '@exmpl/api/services/user'
 import {writeJsonResponse} from '@exmpl/utils/express'
 import logger from '@exmpl/utils/logger'
+import request from 'supertest';
 
 
 export function auth(req: express.Request, res: express.Response, next: express.NextFunction): void {
