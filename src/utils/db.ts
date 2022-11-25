@@ -42,6 +42,7 @@ class MongoConnection {
                 const mongourl = this._mongoServer.getUri();
                 await mongoose.connect(mongourl, opts);
             } else {
+                console.log('mongodb:' + config.mongo.url);
                 logger.debug('connectict to mongodb:' + config.mongo.url);
                 mongoose.connect(config.mongo.url, opts);
             }
@@ -81,7 +82,7 @@ class MongoConnection {
             logger.error(`db.open: ${err}`)
             throw err
         }
-    }    
+    }
 }
 
 export default MongoConnection.getInstance()

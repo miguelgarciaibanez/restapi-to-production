@@ -21,12 +21,14 @@ const userSchema = new Schema<IUser>({
         type: String,
         required: true,
         trim:true,
+        unique:true,
         validate:[validator.isEmail,'do not match email regex']
     },
     name:{type: String, required: true},
     created: { type:Date, default: Date.now}
-}, {strict: true})
-    .index({email:1}, {unique: true, collation: {locale: 'en_US', strength: 1}, sparse:true});
+}, {strict: true});
+
+userSchema.index({email:1}, {unique: true});
 
 
 userSchema.pre<IuserDocument>('save', async function(next){

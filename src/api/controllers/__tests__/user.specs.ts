@@ -50,15 +50,16 @@ describe('POST /api/v1/user', () => {
             .post('/api/v1/user')
             .send(data)
             .set('Accept', 'application/json');
+        console.log(result2)
         expect(result2.statusCode).toEqual(409);
-        expect(JSON.parse(result.text)).toMatchObject({
+        expect(JSON.parse(result2.text)).toMatchObject({
             error: {
                 type: 'account_already_exists',
                 message: expect.stringMatching(/already exists/)
             }
         });
     });
-
+    
     it('should return 400 & valid response for invalid request', async () => {
         const data = {
             mail: faker.internet.email(),
@@ -74,4 +75,5 @@ describe('POST /api/v1/user', () => {
             error: { type: 'request_validation', message: expect.stringMatching(/email/) }
         });
     })
+
 });
