@@ -50,7 +50,6 @@ describe('POST /api/v1/user', () => {
             .post('/api/v1/user')
             .send(data)
             .set('Accept', 'application/json');
-        console.log(result2)
         expect(result2.statusCode).toEqual(409);
         expect(JSON.parse(result2.text)).toMatchObject({
             error: {
