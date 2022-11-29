@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker';
 import db from '@exmpl/utils/db';
+import {createDummy} from '@exmpl/tests/user.specs'
 
 import user from '../user';
 
@@ -9,6 +10,30 @@ beforeAll(async () => {
   
   afterAll(async () => {
     await db.close()
+  })
+
+  describe('login', () => {
+    it('should return JWT token, userId, expireAt to a valid login/password', async () => {
+      const dummy = await createDummy()
+      await expect(user.login(dummy.email, dummy.password)).resolves.toEqual({
+        userId: dummy.userId,
+        token: expect.stringMatching(/^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/),
+        expireAt: expect.any(Date)
+      })
+    })
+  
+    it('should reject with error if login does not exist', async () => {
+      await expect(user.login(faker.internet.email(), faker.internet.password())).resolves.toEqual({
+        error: {type: 'invalid_credentials', message: 'Invalid Login/Password'}
+      })
+    })
+  
+    it('should reject with error if password is wrong', async () => {
+      const dummy = await createDummy()
+      await expect(user.login(dummy.email, faker.internet.password())).resolves.toEqual({
+        error: {type: 'invalid_credentials', message: 'Invalid Login/Password'}
+      })
+    })
   })
 
 describe('auth',()=>{

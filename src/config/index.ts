@@ -14,6 +14,9 @@ const env = dotenvExtended.load({
 const parsedEnv = dotenvParseVariables(env)
  
 interface Config {
+  privateKeyFile: string
+  privateKeyPassphrase: string
+  publicKeyFile: string,
   morganLogger: boolean
   morganBodyLogger: boolean
   exmplDevLogger: boolean
@@ -30,6 +33,9 @@ type LogLevel = 'silent' | 'error' | 'warn' | 'info' | 'http' | 'verbose' | 'deb
 
 
 const config: Config = {
+  privateKeyFile: parsedEnv.PRIVATE_KEY_FILE as string,
+  privateKeyPassphrase: parsedEnv.PRIVATE_KEY_PASSPHRASE as string,
+  publicKeyFile: parsedEnv.PUBLIC_KEY_FILE as string,
   morganLogger: parsedEnv.MORGAN_LOGGER as boolean,
   morganBodyLogger: parsedEnv.MORGAN_BODY_LOGGER as boolean,
   exmplDevLogger: parsedEnv.EXMPL_DEV_LOGGER as boolean,
