@@ -15,14 +15,20 @@ export function dummy() {
 }
 
 export async function createDummy(): Promise<DummyUser> {
-  const user = dummy()
-  const dbUser = new User(user)
-  await dbUser.save()
-  return {...user, userId: dbUser._id.toString()}
+  return new Promise(async (resolve,reject) =>{
+    const user = dummy()
+    const dbUser = new User(user)
+    await dbUser.save()
+    resolve ({...user, userId: dbUser._id.toString()});
+  })
+  
 }
 
 export async function createDummyAndAuthorize(): Promise<AuthorizedDummyUser> {
-  const user = await createDummy()
-  const authToken = await UserService.createAuthToken(user.userId)
-  return {...user, token: authToken.token}
+  return new Promise( async (resolve, reject)=>{
+    const user = await createDummy()
+    const authToken = await UserService.createAuthToken(user.userId)
+    resolve ({ ...user, token: authToken.token});
+  })
+
 }

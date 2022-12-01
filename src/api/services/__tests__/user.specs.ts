@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker';
 import db from '@exmpl/utils/db';
 import {createDummy} from '@exmpl/tests/user.specs'
+import {createDummyAndAuthorize} from '@exmpl/tests/user.specs'
 
 import user from '../user';
 
@@ -33,6 +34,19 @@ beforeAll(async () => {
       await expect(user.login(dummy.email, faker.internet.password())).resolves.toEqual({
         error: {type: 'invalid_credentials', message: 'Invalid Login/Password'}
       })
+    })
+
+    it('auth perfromance test', async () => {
+      const dummy = await createDummyAndAuthorize()
+    
+      const now = new Date().getTime()
+      let i = 0
+      do {
+        i += 1
+        await user.auth(`Bearer ${dummy.token!}`)
+      } while (new Date().getTime() - now < 1000)
+      
+      console.log(`auth perfromance test: ${i}`)
     })
   })
 

@@ -2,13 +2,20 @@ import request from 'supertest';
 import { Express } from 'express-serve-static-core';
 
 import { createServer } from '@exmpl/utils/server';
+import {createDummyAndAuthorize} from '@exmpl/tests/user.specs'
+import db from '@exmpl/utils/db';
 
 
 let server:Express;
 
 beforeAll(async()=>{
+    await db.open()
     server = await createServer();
 });
+
+afterAll(async () => {
+  await db.close()
+})
 
 describe('GET /hello',()=>{
     it('should return 200 & valid response if request param is empty', async() =>{
@@ -37,14 +44,14 @@ describe('GET /hello',()=>{
       });
 
       it('should return 401 & valid eror response to invalid authorization token', async () => {
-        const result = await await request(server).get(`/api/v1/goodbye`).set('Authorization', 'Bearer invalidFakeToken');
+        const result = await request(server).get(`/api/v1/goodbye`).set('Authorization', 'Bearer invalidFakeToken');
         expect(result.statusCode).toEqual(401);
         expect(result.headers[`content-type`]).toMatch('application/json');
         expect(JSON.parse(result.text)).toMatchObject({error: {type: 'unauthorized', message: 'Authentication Failed'}});
       })
     
       it('should return 401 & valid eror response if authorization header field is missed', async () => {
-        const result = await await request(server).get(`/api/v1/goodbye`);
+        const result = await request(server).get(`/api/v1/goodbye`);
         expect(result.statusCode).toEqual(401);
         expect(result.headers[`content-type`]).toMatch('application/json');
         expect(JSON.parse(result.text)).toMatchObject({'error': {
@@ -54,3 +61,17 @@ describe('GET /hello',()=>{
         }});
       })
 });
+
+/*
+describe('GET /goodbye', () => {
+  it('should return 200 & valid response to authorization with fakeToken request', async () => {
+    const dummy = await createDummyAndAuthorize()
+    console.log(dummy.token)
+    const result = await request(server)
+                    .get(`/api/v1/goodbye`)
+                    .set('Authorization', `Bearer ${dummy.token}`);
+        expect(result.statusCode).toEqual(200);
+        expect(result.headers[`content-type`]).toMatch('application/json');
+        expect(JSON.parse(result.text)).toMatchObject({'message': `Goodbye, ${dummy.userId}!`});
+  })
+})*/
