@@ -14,18 +14,19 @@ const env = dotenvExtended.load({
 const parsedEnv = dotenvParseVariables(env)
  
 interface Config {
-  privateKeyFile: string
-  privateKeyPassphrase: string
+  privateKeyFile: string,
+  privateKeyPassphrase: string,
   publicKeyFile: string,
-  morganLogger: boolean
-  morganBodyLogger: boolean
-  exmplDevLogger: boolean
-  loggerLevel: LogLevel
+  morganLogger: boolean,
+  morganBodyLogger: boolean,
+  exmplDevLogger: boolean,
+  loggerLevel: LogLevel,
   mongo: {
     url: string,
     useCreateIndex: boolean,
     autoIndex: boolean
   },
+  localCacheTtl: number,
 }
 
 // Define log levels type (silent + Winston default npm)
@@ -44,7 +45,8 @@ const config: Config = {
     url: parsedEnv.MONGO_URL as string,
     useCreateIndex: parsedEnv.MONGO_CREATE_INDEX as boolean,
     autoIndex: parsedEnv.MONGO_AUTO_INDEX as boolean
-  }
+  },
+  localCacheTtl: parsedEnv.LOCAL_CACHE_TTL as number,
 }
 
 export default config
