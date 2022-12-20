@@ -21,6 +21,7 @@ interface Config {
   morganBodyLogger: boolean,
   exmplDevLogger: boolean,
   loggerLevel: LogLevel,
+  redisUrl: string,
   mongo: {
     url: string,
     useCreateIndex: boolean,
@@ -41,6 +42,7 @@ const config: Config = {
   morganBodyLogger: parsedEnv.MORGAN_BODY_LOGGER as boolean,
   exmplDevLogger: parsedEnv.EXMPL_DEV_LOGGER as boolean,
   loggerLevel: parsedEnv.LOGGER_LEVEL as LogLevel,
+  redisUrl: parsedEnv.REDIS_URL as string,
   mongo: {
     url: parsedEnv.MONGO_URL as string,
     useCreateIndex: parsedEnv.MONGO_CREATE_INDEX as boolean,
